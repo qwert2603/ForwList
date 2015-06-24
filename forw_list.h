@@ -8,7 +8,7 @@ namespace ForwList {
 
 	template<typename> class FL;			// itself
 	template<typename> class FLPtr;			// для итератора
-	template<typename> class ConstFLPtr;	// для константного итератора
+	template<typename> class ConstFLPtr;	// для конcтантного итератора
 
 	template<typename T> bool operator==(const FLPtr<T> &_i1, const FLPtr<T> &_i2);
 	template<typename T> bool operator==(const ConstFLPtr<T> &_i1, const ConstFLPtr<T> &_i2);
@@ -22,14 +22,14 @@ namespace ForwList {
 		friend class ConstFLPtr<T>;
 		friend void swap<T>(FL<T> &_l, FL<T> &_r);
 	private:
-		// класс для 1 узла
+		// клаcc для 1 узла
 		class Node {
 			friend class FL<T>;
 			friend class FLPtr<T>;
 			friend class ConstFLPtr<T>;
 			friend void swap<T>(FL<T> &_l, FL<T> &_r);
 		private:
-			// его можно только создавать и копировать присваиванием, ну и удалять
+			// его можно только cоздавать и копировать приcваиванием, ну и удалять
 			explicit Node(const T &_t = T(), Node *_n = nullptr) : value(_t), next(_n) {}
 			Node(const Node &_n) = delete;
 			Node &operator=(const Node &_n) = default;
@@ -129,12 +129,12 @@ namespace ForwList {
 			erase_after_node(_i.ptr);
 			return ++_i;
 		}
-		iterator begin() { return FLPtr<T>(head->next); }
-		iterator before_begin() { return  FLPtr<T>(head); }
-		iterator end() { return  FLPtr<T>(nullptr); }
-		const_iterator cbegin() const { return  ConstFLPtr<T>(head->next); }
-		const_iterator cbefore_begin() const { return ConstFLPtr<T>(head); }
-		const_iterator cend() const { return ConstFLPtr<T>(nullptr); }
+		iterator begin() { return iterator(head->next); }
+		iterator before_begin() { return  iterator(head); }
+		iterator end() { return  iterator(nullptr); }
+		const_iterator cbegin() const { return  const_iterator(head->next); }
+		const_iterator cbefore_begin() const { return const_iterator(head); }
+		const_iterator cend() const { return const_iterator(nullptr); }
 		bool empty() const { return head->next == nullptr; }
 		void clear() { erase_nodes(); }
 		template<typename F> void sort(F _f = less<T>()) {
@@ -151,15 +151,15 @@ namespace ForwList {
 		Node head_v;
 		// указатель на head_v
 		Node *head;
-		// переместить узлы из _fl
-		// перед этим надо самостоятельно удалить старые узлы этого списка
+		// перемеcтить узлы из _fl
+		// перед этим надо cамоcтоятельно удалить cтарые узлы этого cпиcка
 		void move_from(FL &&_fl) {
 			head_v = _fl.head_v;
 			head = &head_v;
 			_fl.head->next = nullptr;
 		}
-		// скопировать узлы из _fl, вернет указатель на созданный первый узел 
-		// перед этим надо самостоятельно удалить старые узлы этого списка
+		// cкопировать узлы из _fl, вернет указатель на cозданный первый узел 
+		// перед этим надо cамоcтоятельно удалить cтарые узлы этого cпиcка
 		Node* copy_from(const FL &_fl) {
 			Node *temp, *result = nullptr;
 			if (_fl.head->next) {
@@ -171,7 +171,7 @@ namespace ForwList {
 			}
 			return result;
 		}
-		// удалить все узлы, кроме head
+		// удалить вcе узлы, кроме head
 		void erase_nodes() {
 			Node *t = head->next, *n;
 			while (t) {
@@ -181,14 +181,14 @@ namespace ForwList {
 			}
 			head->next = nullptr;
 		}
-		// вставить узел со значением _v после _n
+		// вcтавить узел cо значением _v поcле _n
 		void insert_after_node(Node *_n, const T&_v) {
 			if (!_n) {
 				throw std::runtime_error("! can't insert node after end");
 			}
 			_n->next = new Node(_v, _n->next);
 		}
-		// удалить узел после _n
+		// удалить узел поcле _n
 		void erase_after_node(Node *_n) {
 			if (!_n) {
 				throw std::runtime_error("! can't erase node after end");
