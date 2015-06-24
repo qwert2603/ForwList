@@ -8,8 +8,6 @@ using namespace std;
 int _tmain(int argc, _TCHAR* argv[]) {
 	try {
 		ForwList::FL<int> fl1;
-		default_random_engine d;
-		uniform_int_distribution<> u(0, 10000);
 		for (int i = 0; i != 5; ++i) {
 			fl1.insert_after(fl1.before_begin(), i);
 		}
@@ -42,7 +40,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		cout << _e.what() << endl;
 	}
 	
-
 	char z1;
 	cin >> z1;
 	return 0;
