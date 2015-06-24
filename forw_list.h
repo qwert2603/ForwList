@@ -224,7 +224,7 @@ namespace ForwList {
 		T *operator->() { return &**this; }
 		FLPtr &operator++() {
 			if (!ptr) {
-				throw std::out_of_range("! incrementing end");
+				throw std::out_of_range("! incrementing end iterator");
 			}
 			ptr = ptr->next;
 			return *this;
@@ -257,7 +257,7 @@ namespace ForwList {
 		const T *operator->() { return &**this; }
 		ConstFLPtr &operator++() {
 			if (!ptr) {
-				throw std::out_of_range("! incrementing end");
+				throw std::out_of_range("! incrementing end const_iterator");
 			}
 			ptr = ptr->next;
 			return *this;
