@@ -10,8 +10,11 @@ namespace ForwList {
 	template<typename> class FLPtr;			// для итератора
 	template<typename> class ConstFLPtr;	// для конcтантного итератора
 
+	// на все случаи жизни
 	template<typename T> bool operator==(const FLPtr<T> &_i1, const FLPtr<T> &_i2);
 	template<typename T> bool operator==(const ConstFLPtr<T> &_i1, const ConstFLPtr<T> &_i2);
+	template<typename T> bool operator==(const FLPtr<T> &_i1, const ConstFLPtr<T> &_i2);
+	template<typename T> bool operator==(const ConstFLPtr<T> &_i1, const FLPtr<T> &_i2);
 
 	template<typename T> void swap(FL<T> &_l, FL<T> &_r);
 
@@ -208,6 +211,8 @@ namespace ForwList {
 		friend class FL<T>;
 		friend class ConstFLPtr<T>;
 		friend bool operator==<T>(const FLPtr<T> &_i1, const FLPtr<T> &_i2);
+		friend bool operator==<T>(const ConstFLPtr<T> &_i1, const FLPtr<T> &_i2);
+		friend bool operator==<T>(const FLPtr<T> &_i1, const ConstFLPtr<T> &_i2);
 	public:
 		explicit FLPtr(typename FL<T>::Node* _n = nullptr) : ptr(_n) {}
 		T &operator*() {
@@ -238,6 +243,8 @@ namespace ForwList {
 	template<typename T> class ConstFLPtr {
 		friend class FL<T>;
 		friend bool operator==<T>(const ConstFLPtr<T> &_i1, const ConstFLPtr<T> &_i2);
+		friend bool operator==<T>(const ConstFLPtr<T> &_i1, const FLPtr<T> &_i2);
+		friend bool operator==<T>(const FLPtr<T> &_i1, const ConstFLPtr<T> &_i2);
 	public:
 		explicit ConstFLPtr(typename FL<T>::Node* _n = nullptr) : ptr(_n) {}
 		ConstFLPtr(const FLPtr<T> &_flptr) : ptr(_flptr.ptr) {}
@@ -279,6 +286,22 @@ namespace ForwList {
 	}
 
 	template<typename T> bool operator!=(const ConstFLPtr<T> &_i1, const ConstFLPtr<T> &_i2) {
+		return !(_i1 == _i2);
+	}
+
+	template<typename T> bool operator==(const ConstFLPtr<T> &_i1, const FLPtr<T> &_i2) {
+		return _i1.ptr == _i2.ptr;
+	}
+
+	template<typename T> bool operator!=(const ConstFLPtr<T> &_i1, const FLPtr<T> &_i2) {
+		return !(_i1 == _i2);
+	}
+
+	template<typename T> bool operator==(const FLPtr<T> &_i1, const ConstFLPtr<T> &_i2) {
+		return _i1.ptr == _i2.ptr;
+	}
+
+	template<typename T> bool operator!=(const FLPtr<T> &_i1, const ConstFLPtr<T> &_i2) {
 		return !(_i1 == _i2);
 	}
 
