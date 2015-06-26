@@ -4,6 +4,7 @@
 #include <utility>
 #include <stdexcept>
 #include <memory>
+#include <functional>
 
 namespace ForwList {
 
@@ -146,7 +147,7 @@ namespace ForwList {
 			}
 		}
 		void sort() {
-			sort(less<T>());
+			sort(std::less<T>());
 		}
 	private:
 		// заглавный фиктивный узел
