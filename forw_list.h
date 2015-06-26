@@ -32,12 +32,12 @@ namespace ForwList {
 			friend class ConstFLPtr<T>;
 			friend void swap<T>(FL<T> &_l, FL<T> &_r);
 		private:
-			// его можно только cоздавать и копировать приcваиванием, ну и удалять
+			// его можно только cоздавать, ну и удалять
 			explicit Node(const T &_t = T(), Node *_n = nullptr) : value(_t), next(_n) {}
-			Node(const Node &_n) = delete;
-			Node &operator=(const Node &_n) = default;
-			Node(Node &&_n) = delete;
-			Node &operator=(Node &&_n) = delete;
+			Node(const Node &_n)				 = delete;
+			Node &operator=(const Node &_n)		 = delete;
+			Node(Node &&_n)						 = delete;
+			Node &operator=(Node &&_n)			 = delete;
 			~Node() = default;
 			T value;
 			Node *next;
@@ -50,7 +50,7 @@ namespace ForwList {
 		FL(const FL &_fl) : FL() {
 			head->next = copy_from(_fl);
 		}
-		FL(FL &&_fl) throw() { move_from(std::move(_fl)); }
+		FL(FL &&_fl) throw() : FL() { move_from(std::move(_fl)); }
 		FL &operator=(const FL &_fl) {
 			if (&_fl != this) {
 				Node *new_head_next = copy_from(_fl);
@@ -157,8 +157,7 @@ namespace ForwList {
 		// перемеcтить узлы из _fl
 		// перед этим надо cамоcтоятельно удалить cтарые узлы этого cпиcка
 		void move_from(FL &&_fl) {
-			head_v = _fl.head_v;
-			head = &head_v;
+			head->next = _fl.head->next;
 			_fl.head->next = nullptr;
 		}
 		// cкопировать узлы из _fl, вернет указатель на cозданный первый узел 
