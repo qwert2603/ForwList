@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <stdexcept>
+#include <functional>
 
 namespace ForwList {
 
@@ -34,10 +35,10 @@ namespace ForwList {
 		private:
 			// его можно только cоздавать, ну и удалять
 			explicit Node(const T &_t = T(), Node *_n = nullptr) : value(_t), next(_n) {}
-			Node(const Node &_n)				 = delete;
-			Node &operator=(const Node &_n)		 = delete;
-			Node(Node &&_n)						 = delete;
-			Node &operator=(Node &&_n)			 = delete;
+			Node(const Node &_n) = delete;
+			Node &operator=(const Node &_n) = delete;
+			Node(Node &&_n) = delete;
+			Node &operator=(Node &&_n) = delete;
 			~Node() = default;
 			T value;
 			Node *next;
@@ -140,7 +141,7 @@ namespace ForwList {
 		const_iterator cend() const { return const_iterator(nullptr); }
 		bool empty() const { return head->next == nullptr; }
 		void clear() { erase_nodes(); }
-		template<typename F> void sort(F _f = less<T>()) {
+		template<typename F> void sort(F _f) {
 			for (Node *n1 = head->next; n1; n1 = n1->next) {
 				for (Node *n2 = n1->next; n2; n2 = n2->next) {
 					if (_f(n2->value, n1->value)) {
@@ -148,6 +149,9 @@ namespace ForwList {
 					}
 				}
 			}
+		}
+		void sort() {
+			sort(std::less<T>());
 		}
 	private:
 		// заглавный фиктивный узел
